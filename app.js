@@ -1,33 +1,56 @@
+//required packages
 var express = require('express');
 var bodyParser = require('body-parser');
+var date = require(__dirname+"/date.js");
 
+//app building
 var app = express();
+
+//list of To-do's
 var items = ["Buy Food","Cook Food","Eat Food"];
+let workItems = [];
+
+//Loading Ejs
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
-app.get("/", function (req, res) {
-    var today = new Date();
-    var options = {
-        weekday:"long",
-        day:"numeric",
-        month:"long"
-    };
+app.use(express.static("public"));
 
-    var day = today.toLocaleDateString("en-US",options);
-    // var currentDay = today.getDay();
-    // var day = "";
-    // var week = { "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 0 };
-    // day = Object.keys(week).find(key => week[key] === currentDay);
-    res.render("list", { kindOfDay: day, newListItems:items });
+//Get functions
+app.get("/", function (req, res) {
+
+    let day = date.getDate();
+    res.render("list", { listTitle: day, newListItems:items });
 });
 
+app.get("/work",function (req,res) { 
+    res.render("list",{listTitle:"Work List",newListItems:workItems});
+});
+
+app.get("/about",function(req,res){
+    res.render("about");
+});
+
+//Post Functions
 app.post("/",function(req,res){
     var item = req.body.newItem;
-    items.push(item);
-    res.redirect("/");
+    if(req.body.list==="Work"){
+        workItems.push(item);
+        res.redirect("/work");
+    }else{
+        items.push(item);
+        res.redirect("/");
+    }
     console.log(item);
 });
 
+app.post("/work",function(req,res){
+    var item = req.body.newItem;
+    workItems.push(item);
+    res.redirect("/work");
+    console.log(item);
+});
+
+//Listen Functions
 app.listen(3000, function () {
     console.log("Server started on port 3000");
 });
