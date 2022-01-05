@@ -9,7 +9,7 @@ exports.getDate = function() {
     return today.toLocaleDateString("en-US", options);
 };
 
-exports.getDay =function() {
+exports.getDay = function() {
     var today = new Date();
     var options = {
         weekday: "long",

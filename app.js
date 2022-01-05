@@ -17,17 +17,16 @@ app.use(express.static("public"));
 
 //Get functions
 app.get("/", function (req, res) {
-
     let day = date.getDate();
-    res.render("list", { listTitle: day, newListItems:items });
+    res.render("list", { listTitle: day, newListItems:items,buttonName:"Work List🏢",redirectLocation:"http://localhost:3000/work"});
 });
 
 app.get("/work",function (req,res) { 
-    res.render("list",{listTitle:"Work List",newListItems:workItems});
+    res.render("list",{listTitle:"Work List",newListItems:workItems,buttonName:"ToDo List✅",redirectLocation:"http://localhost:3000/"});
 });
 
 app.get("/about",function(req,res){
-    res.render("about");
+    res.render("about",{listTitle:"About Us",redirectLocation:"http://localhost:3000/"});
 });
 
 //Post Functions

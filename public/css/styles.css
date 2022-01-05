@@ -56,7 +56,7 @@ form {
   margin-left: 20px;
 }
 
-button {
+#add_task {
   min-height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -95,3 +95,26 @@ footer {
   text-align: center;
 
 }
+
+.wrapper{
+  text-align: center;
+}
+
+#Work_list_button{
+  margin-bottom: 1rem;
+  text-align: center;
+  background-color: #fff;
+  min-height: 50px;
+  width: 150px;
+  border-radius: 10%;
+  border-color: transparent;
+  color: rgb(0, 0, 0);
+  font-size: 22px;
+  padding-bottom: 6px;
+  border-width: 0;
+}
+
+#Work_list_button:hover{
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0,.7);
+}
+

@@ -12,8 +12,16 @@
             <% } %>
             <form class="item" action="/" method="post">
                 <input placeholder="New task" type="text" name="newItem" autocomplete="off">
-                <button type="submit" name="list" value=<%= listTitle %>>+</button>
+                <button id="add_task" type="submit" name="list" value=<%= listTitle %>>+</button>
             </form>
+    </div>
+    <div class="wrapper">
+        <button id="Work_list_button" onclick="window.location = '<%= redirectLocation %>'">
+            <%= buttonName %>
+        </button>
+        <button id="Work_list_button" onclick="window.location = 'http://localhost:3000/about'">
+            About 🙂
+        </button>
     </div>
 
 <%- include("footer") -%> 
