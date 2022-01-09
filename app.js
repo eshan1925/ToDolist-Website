@@ -110,7 +110,7 @@ app.get("/work", function (req, res) {
 // });
 
 app.get("/about", function (req, res) {
-    res.render("about", { listTitle: "About Us", redirectLocation: "http://localhost:3000/" });
+    res.render("about", { listTitle: "About Us", redirectLocation: "/" });
 });
 
 //Post Functions
