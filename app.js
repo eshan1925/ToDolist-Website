@@ -13,8 +13,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-//connecting or creating of database
+//connecting or creating of database to server
 mongoose.connect("mongodb+srv://admin-eshan:Test123@cluster0.l312f.mongodb.net/todoListDB", { useNewUrlParser: true });
+
+//connecting or creating of database to local server
+// mongoose.connect("mongodb://localhost:27017/todoListDB");
 
 //defining the schema
 var itemsSchema = {
@@ -55,6 +58,7 @@ var List = mongoose.model("List", listSchema);
 // });
 
 var day = date.getDate();
+console.log(typeof(day));
 //Get functions
 app.get("/", function (req, res) {
     //finding items
@@ -79,19 +83,19 @@ app.get("/", function (req, res) {
     });
 });
 
-app.get("/:customListName", function (req, res) {
-    var customListName =_.capitalize(req.params.customListName);
-    List.findOne({ name: customListName }, function (err, foundList) {
+app.get("/work", function (req, res) {
+    var listName =_.capitalize("work");
+    List.findOne({ name: listName }, function (err, foundList) {
         if (!err) {
             if (!foundList) {
                 //Create a new List
                 var list = new List({
-                    name: customListName,
+                    name: listName,
                     items: defaultItems
                 });
 
                 list.save();
-                res.redirect("/" + customListName);
+                res.redirect("/" + listName);
             } else {
                 //Show an exisiting List
                 res.render("list", { listTitle: foundList.name, newListItems: foundList.items, buttonName: "ToDo List✅", redirectLocation: "/" });
@@ -105,14 +109,16 @@ app.get("/:customListName", function (req, res) {
 //     res.render("list", { listTitle: "Work List", newListItems: workItems, buttonName: "ToDo List✅", redirectLocation: "http://localhost:3000/" });
 // });
 
-// app.get("/about", function (req, res) {
-//     res.render("about", { listTitle: "About Us", redirectLocation: "http://localhost:3000/" });
-// });
+app.get("/about", function (req, res) {
+    res.render("about", { listTitle: "About Us", redirectLocation: "http://localhost:3000/" });
+});
 
 //Post Functions
 app.post("/", function (req, res) {
     var itemName = req.body.newItem;
     var listName = req.body.list;
+    console.log(listName);
+    console.log(day);
     var item = new Item({
         name: itemName
     });
