@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 //connecting or creating of database
-mongoose.connect("mongodb://localhost:27017/todoListDB", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://admin-eshan:Test123@cluster0.l312f.mongodb.net/todoListDB", { useNewUrlParser: true });
 
 //defining the schema
 var itemsSchema = {
