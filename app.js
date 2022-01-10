@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var date = require(__dirname + "/date.js");
 var mongoose = require("mongoose");
 var _ = require("lodash");
+var { check, validationResult } = require('express-validator');
+var alert = require("alert");
 //app building
 var app = express();
 
@@ -58,7 +60,7 @@ var List = mongoose.model("List", listSchema);
 // });
 
 var day = date.getDate();
-console.log(typeof(day));
+console.log(typeof (day));
 //Get functions
 app.get("/", function (req, res) {
     //finding items
@@ -84,7 +86,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/work", function (req, res) {
-    var listName =_.capitalize("work");
+    var listName = _.capitalize("work");
     List.findOne({ name: listName }, function (err, foundList) {
         if (!err) {
             if (!foundList) {
@@ -114,27 +116,35 @@ app.get("/about", function (req, res) {
 });
 
 //Post Functions
-app.post("/", function (req, res) {
-    var itemName = req.body.newItem;
-    var listName = req.body.list;
-    console.log(listName);
-    console.log(day);
-    var item = new Item({
-        name: itemName
-    });
-    if (listName === "Today") {
-        item.save();
+app.post("/", [check('newItem').isLength({ min: 1, max: 50 })], function (req, res) {
+
+    var errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log("Field is too short!!!");
+        alert("Field is too short!!!");
         res.redirect("/");
     } else {
-        List.findOne({ name: listName }, function (err, foundList) {
-            if (err) {
-                console.log(err);
-            } else {
-                foundList.items.push(item);
-                foundList.save();
-                res.redirect("/" + listName);
-            }
+        var itemName = req.body.newItem;
+        var listName = req.body.list;
+        console.log(listName);
+        console.log(day);
+        var item = new Item({
+            name: itemName
         });
+        if (listName === "Today") {
+            item.save();
+            res.redirect("/");
+        } else {
+            List.findOne({ name: listName }, function (err, foundList) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    foundList.items.push(item);
+                    foundList.save();
+                    res.redirect("/" + listName);
+                }
+            });
+        }
     }
 });
 
@@ -149,19 +159,19 @@ app.post("/delete", function (req, res) {
                 res.redirect("/");
             }
         });
-    } else{
-        List.findOneAndUpdate({name:listName},{$pull:{items:{_id:checkedItemId}}},function(err,foundList){
-            if(!err){
-                console.log("Removed Item from "+listName+" List");
-                res.redirect("/"+listName);
+    } else {
+        List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, function (err, foundList) {
+            if (!err) {
+                console.log("Removed Item from " + listName + " List");
+                res.redirect("/" + listName);
             }
         });
     }
 });
 
 let port = process.env.PORT;
-if(port==null || port==""){
-    port=3000;
+if (port == null || port == "") {
+    port = 3000;
 }
 
 //Listen Functions
