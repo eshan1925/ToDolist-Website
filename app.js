@@ -1,4 +1,7 @@
+//jshint esversion:6
+
 //required packages
+require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
 var date = require(__dirname + "/date.js");
@@ -6,6 +9,11 @@ var mongoose = require("mongoose");
 var _ = require("lodash");
 var { check, validationResult } = require('express-validator');
 var alert = require("alert");
+const session = require("express-session");
+const passport = require("passport");
+const passportLocalMongoose = require("passport-local-mongoose");
+const arr = require('jshint/data/non-ascii-identifier-start');
+
 //app building
 var app = express();
 
@@ -13,7 +21,21 @@ var app = express();
 //Loading Ejs
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
+
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+
+//initialising passport
+app.use(passport.initialize());
+
+//passport will also use session
+app.use(passport.session());
+
+
 
 //connecting or creating of database to server
 mongoose.connect("mongodb+srv://admin-eshan:Test123@cluster0.l312f.mongodb.net/todoListDB", { useNewUrlParser: true });
@@ -23,132 +45,193 @@ mongoose.connect("mongodb+srv://admin-eshan:Test123@cluster0.l312f.mongodb.net/t
 
 //defining the schema
 var itemsSchema = {
+    id: String,
     name: String
 };
 
+//defining the schema like an object becuase we want to use encryption
+var userSchema = new mongoose.Schema({
+    email: String,
+    userName: String,
+    password: String,
+    name: String,
+    secret: String
+});
+
+//giving a plugin to our pre built schema as level 5
+userSchema.plugin(passportLocalMongoose);
+
 //creating a collection using the schema
 var Item = mongoose.model("Item", itemsSchema);
+//creating a collection using the schema
+var User = mongoose.model("User", userSchema);
 
-//using the schema and building some default objects
-var item1 = new Item({
-    name: "Welcome to your todo List!"
+passport.use(User.createStrategy());
+
+//this works to serialise user in all cases
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
 });
 
-var item2 = new Item({
-    name: "Hit the + button to add a new task!"
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+        done(err, user);
+    });
 });
 
-var item3 = new Item({
-    name: "<---Hit this to delete an item."
-});
 
-var defaultItems = [item1, item2, item3];
+
 
 var listSchema = {
     name: String,
-    items: [itemsSchema]
+    items: [itemsSchema],
+    id: String
 };
 
 var List = mongoose.model("List", listSchema);
-// inserting items
-// Item.insertMany(defaultItems, function (err) {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         console.log("Successfully added items!!!");
-//     }
-// });
 
 var day = date.getDate();
-console.log(typeof (day));
 //Get functions
 app.get("/", function (req, res) {
-    //finding items
-    Item.find({}, function (err, foundItems) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (foundItems.length === 0) {
-                Item.insertMany(defaultItems, function (err) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log("Successfully added items!!!");
-                    }
-                });
-                res.redirect("/"); //for redirecting so that we can see the items
-            } else {
-                console.log("Successfully found Items!!!");
-                res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", redirectLocation: "/work" });
-            }
-        }
-    });
+    res.render("home.ejs", { redirectLocation: "/login-signup" });
 });
 
-app.get("/work", function (req, res) {
-    var listName = _.capitalize("work");
-    List.findOne({ name: listName }, function (err, foundList) {
-        if (!err) {
-            if (!foundList) {
-                //Create a new List
-                var list = new List({
-                    name: listName,
-                    items: defaultItems
-                });
-
-                list.save();
-                res.redirect("/" + listName);
+app.get("/list/:userId", function (req, res) {
+    if (req.isAuthenticated()) {
+        const presentUserId = req.params.userId;
+        // finding items
+        Item.find({ id: presentUserId }, function (err, foundItems) {
+            if (err) {
+                console.log(err);
             } else {
-                //Show an exisiting List
-                res.render("list", { listTitle: foundList.name, newListItems: foundList.items, buttonName: "ToDo List✅", redirectLocation: "/" });
-            }
-        }
-    });
+                if (foundItems.length === 0) {
+                    //using the schema and building some default objects
+                    var item1 = new Item({
+                        name: "Welcome to your todo List!",
+                        id: presentUserId
+                    });
 
+                    var item2 = new Item({
+                        name: "Hit the + button to add a new task!",
+                        id: presentUserId
+                    });
+
+                    var item3 = new Item({
+                        name: "<---Hit this to delete an item.",
+                        id: presentUserId
+                    });
+
+                    var defaultItems = [item1, item2, item3];
+                    Item.insertMany(defaultItems, function (err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log("Successfully added items!!!");
+                        }
+                    });
+                    res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
+                } else {
+                    console.log("Successfully found Items!!!");
+                    res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", redirectLocation: "/work/" + presentUserId, presentUser: presentUserId });
+                }
+            }
+        });
+    } else {
+        res.redirect("/");
+    }
 });
 
-// app.get("/work", function (req, res) {
-//     res.render("list", { listTitle: "Work List", newListItems: workItems, buttonName: "ToDo List✅", redirectLocation: "http://localhost:3000/" });
-// });
+app.get("/work/:userId", function (req, res) {
+    if (req.isAuthenticated()) {
+        const presentUserId = req.params.userId;
+        var listName = _.capitalize("work");
+        List.findOne({ name: listName, id: presentUserId }, function (err, foundList) {
+            if (!err) {
+                if (!foundList) {
+                    var item1 = new Item({
+                        name: "Welcome to your todo List!",
+                        id: presentUserId
+                    });
 
-app.get("/about", function (req, res) {
-    res.render("about", { listTitle: "About Us", redirectLocation: "/" });
+                    var item2 = new Item({
+                        name: "Hit the + button to add a new task!",
+                        id: presentUserId
+                    });
+
+                    var item3 = new Item({
+                        name: "<---Hit this to delete an item.",
+                        id: presentUserId
+                    });
+                    var defaultItems = [item1, item2, item3];
+                    //Create a new List
+                    var list = new List({
+                        name: listName,
+                        items: defaultItems,
+                        id: presentUserId
+                    });
+
+                    list.save();
+                    res.redirect("/work/" + presentUserId);
+                } else {
+                    //Show an exisiting List
+                    res.render("list", { listTitle: foundList.name, newListItems: foundList.items, buttonName: "ToDo List✅", redirectLocation: "/list/" + presentUserId, presentUser: presentUserId });
+                }
+            }
+        });
+    }else{
+        res.redirect("/");
+    }
+});
+
+app.get("/about/:userId", function (req, res) {
+    const presentUserId = req.params.userId;
+    res.render("about", { listTitle: "About Us", redirectLocation: "/list/" + presentUserId });
+});
+
+app.get("/login-signup", function (req, res) {
+    res.render("login-signup");
+});
+
+app.get("/logout", function (req, res) {
+    //logout is also a function from passport.js and it logsout the user accordingly.
+    req.logOut();
+    res.redirect("/");
 });
 
 //Post Functions
-app.post("/", [check('newItem').isLength({ min: 1, max: 50 })], function (req, res) {
-
+app.post("/list/:userId", [check('newItem').isLength({ min: 1, max: 50 })], function (req, res) {
+    var presentUserId = req.params.userId;
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
         console.log("Field is too short!!!");
         alert("Field is too short!!!");
-        res.redirect("/");
+        res.redirect("/list/" + presentUserId);
     } else {
         var itemName = req.body.newItem;
         var listName = req.body.list;
-        console.log(listName);
-        console.log(day);
         var item = new Item({
+            id: presentUserId,
             name: itemName
         });
         if (listName === "Today") {
             item.save();
-            res.redirect("/");
+            res.redirect("/list/" + presentUserId);
         } else {
-            List.findOne({ name: listName }, function (err, foundList) {
+            List.findOne({ name: listName, id: presentUserId }, function (err, foundList) {
                 if (err) {
                     console.log(err);
                 } else {
                     foundList.items.push(item);
                     foundList.save();
-                    res.redirect("/" + listName);
+                    res.redirect("/" + listName.toLowerCase() + "/" + presentUserId);
                 }
             });
         }
     }
 });
 
-app.post("/delete", function (req, res) {
+app.post("/delete/:userId", function (req, res) {
+    var presentUserId = req.params.userId;
     var checkedItemId = req.body.checkbox;
     var listName = req.body.listName;
 
@@ -156,17 +239,48 @@ app.post("/delete", function (req, res) {
         Item.findByIdAndRemove(checkedItemId, function (err) {
             if (!err) {
                 console.log("Removed Item from Default List");
-                res.redirect("/");
+                res.redirect("/list/" + presentUserId);
             }
         });
     } else {
         List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, function (err, foundList) {
             if (!err) {
                 console.log("Removed Item from " + listName + " List");
-                res.redirect("/" + listName);
+                res.redirect("/" + listName + "/" + presentUserId);
             }
         });
     }
+});
+
+app.post("/register", function (req, res) {
+    User.register({ username: req.body.username }, req.body.password, function (err, user) {
+        if (err) {
+            console.log(err);
+            res.redirect("/");
+        } else {
+            passport.authenticate("local")(req, res, function () {
+                res.redirect("/login-signup");
+            });
+        }
+    });
+});
+
+app.post("/login", function (req, res) {
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    // logIn function is given to us from passport and it performs everything bts to login and authenticate our user.
+    req.logIn(user, function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            passport.authenticate("local")(req, res, function () {
+                res.redirect("/list/" + req.user._id);
+            });
+        }
+    });
 });
 
 let port = process.env.PORT;

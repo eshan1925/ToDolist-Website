@@ -1,11 +1,13 @@
 <%- include("header") -%> 
+<body> 
     <div class="box" id="heading">
         <h1><%= listTitle %></h1>
     </div>
 
     <div class="box">
         <% newListItems.forEach(function(item){ %>
-            <form action="/delete" method="post" >
+            <% var deleter = "/delete/"+presentUser %>
+            <form action="<%= deleter %> " method="post" >
                 <div class="item">
                     <input name="checkbox" type="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
                     <p><%= item.name %></p>
@@ -13,7 +15,8 @@
                 <input type="hidden" name="listName" value="<%= listTitle %>"></input>
             </form>
         <% }) %>
-            <form class="item" action="/" method="post" name="form1">
+        <% var actionForm = "/list/"+presentUser %> 
+            <form class="item" action="<%= actionForm %> " method="post" name="form1">
                 <input placeholder="New task" type="text" name="newItem" autocomplete="off">
                 <button id="add_task" type="submit" name="list" value=<%= listTitle %>>+</button>
             </form>
@@ -22,8 +25,15 @@
         <button id="Work_list_button" onclick="window.location = '<%= redirectLocation %>'">
             <%= buttonName %>
         </button>
-        <button id="Work_list_button" onclick="window.location = '/about'">
+        <% var about = "/about/"+presentUser %> 
+        <button id="Work_list_button" onclick="window.location = '<%=about %>'">
             About 🙂
+        </button>
+    </div>
+
+    <div class="wrapper">
+        <button id="Work_list_button" onclick="window.location = '/logout'">
+            Sign Out 👋
         </button>
     </div>
 <%- include("footer") -%> 

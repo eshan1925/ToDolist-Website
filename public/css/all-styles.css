@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Quicksand');
+
+*{
+  font-family: 'quicksand',Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
 html {
   background-color: #eae9fd;
   background-image: -webkit-linear-gradient(65deg, #a683e3 50%, #eae9fd 50%);
@@ -98,6 +105,20 @@ footer {
 
 .wrapper{
   text-align: center;
+}
+
+#Work_list_button_login{
+  margin-bottom: 1rem;
+  text-align: center;
+  background-color: #fff;
+  min-height: 50px;
+  width: 200px;
+  border-radius: 10%;
+  border-color: transparent;
+  color: rgb(0, 0, 0);
+  font-size: 22px;
+  padding-bottom: 6px;
+  border-width: 0;
 }
 
 #Work_list_button{
