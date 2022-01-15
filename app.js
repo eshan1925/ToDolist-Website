@@ -12,8 +12,8 @@ var alert = require("alert");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
-const arr = require('jshint/data/non-ascii-identifier-start');
-
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const findOrCreate = require("mongoose-findorcreate");
 //app building
 var app = express();
 
@@ -60,6 +60,7 @@ var userSchema = new mongoose.Schema({
 
 //giving a plugin to our pre built schema as level 5
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
 
 //creating a collection using the schema
 var Item = mongoose.model("Item", itemsSchema);
@@ -79,7 +80,17 @@ passport.deserializeUser(function (id, done) {
     });
 });
 
-
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "https://lit-thicket-87663.herokuapp.com/auth/google/lists",
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        return cb(err, user);
+    });
+  }
+));
 
 
 var listSchema = {
@@ -95,6 +106,17 @@ var day = date.getDate();
 app.get("/", function (req, res) {
     res.render("home.ejs", { redirectLocation: "/login-signup" });
 });
+
+app.get("/auth/google",
+    passport.authenticate("google",{ scope: ["profile"] })
+);
+
+app.get("/auth/google/lists", 
+  passport.authenticate("google", { failureRedirect: "/register" }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/list/"+req.user._id);
+  });
 
 app.get("/list/:userId", function (req, res) {
     if (req.isAuthenticated()) {
