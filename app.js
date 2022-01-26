@@ -26,7 +26,11 @@ app.use(express.static(__dirname + "/public"));
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        maxAge: 36000000 //10 Hour
+    }
 }));
 
 //initialising passport
@@ -36,9 +40,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
+var connectionURL = "mongodb+srv://admin-eshan:"+process.env.MONGO+"@cluster0.l312f.mongodb.net/todoListDB";
 //connecting or creating of database to server
-mongoose.connect("mongodb+srv://admin-eshan:Test123@cluster0.l312f.mongodb.net/todoListDB", { useNewUrlParser: true });
+mongoose.connect(connectionURL, { useNewUrlParser: true });
 
 //connecting or creating of database to local server
 // mongoose.connect("mongodb://localhost:27017/todoListDB");
