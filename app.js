@@ -38,7 +38,7 @@ app.use(passport.session());
 
 
 //connecting or creating of database to server
-mongoose.connect("mongodb+srv://admin-eshan:Test123@cluster0.l312f.mongodb.net/todoListDB", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGO_DB_URL, { useNewUrlParser: true });
 
 //connecting or creating of database to local server
 // mongoose.connect("mongodb://localhost:27017/todoListDB");
