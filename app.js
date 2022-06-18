@@ -14,8 +14,11 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
+const { bindAll, intersection } = require('lodash');
+const moment = require('moment');
 //app building
 var app = express();
+
 
 
 //Loading Ejs
@@ -40,7 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-var connectionURL = "mongodb+srv://admin-eshan:"+process.env.MONGO+"@cluster0.l312f.mongodb.net/todoListDB";
+var connectionURL = "mongodb+srv://admin-eshan:" + process.env.MONGO + "@cluster0.l312f.mongodb.net/todoListDB";
 //connecting or creating of database to server
 mongoose.connect(connectionURL, { useNewUrlParser: true });
 
@@ -50,7 +53,10 @@ mongoose.connect(connectionURL, { useNewUrlParser: true });
 //defining the schema
 var itemsSchema = {
     id: String,
-    name: String
+    name: String,
+    checked: Boolean,
+    dateOfCompletion: String,
+    tags: [{ type: String }],
 };
 
 //defining the schema like an object becuase we want to use encryption
@@ -88,12 +94,12 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "https://lit-thicket-87663.herokuapp.com/auth/google/lists",
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return cb(err, user);
-    });
-  }
+},
+    function (accessToken, refreshToken, profile, cb) {
+        User.findOrCreate({ googleId: profile.id }, function (err, user) {
+            return cb(err, user);
+        });
+    }
 ));
 
 
@@ -112,15 +118,15 @@ app.get("/", function (req, res) {
 });
 
 app.get("/auth/google",
-    passport.authenticate("google",{ scope: ["profile"] })
+    passport.authenticate("google", { scope: ["profile"] })
 );
 
-app.get("/auth/google/lists", 
-  passport.authenticate("google", { failureRedirect: "/register" }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect("/list/"+req.user._id);
-  });
+app.get("/auth/google/lists",
+    passport.authenticate("google", { failureRedirect: "/register" }),
+    function (req, res) {
+        // Successful authentication, redirect home.
+        res.redirect("/list/" + req.user._id);
+    });
 
 app.get("/list/:userId", function (req, res) {
     if (req.isAuthenticated()) {
@@ -131,20 +137,31 @@ app.get("/list/:userId", function (req, res) {
                 console.log(err);
             } else {
                 if (foundItems.length === 0) {
+                    var today = new Date();
+                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                     //using the schema and building some default objects
                     var item1 = new Item({
                         name: "Welcome to your todo List!",
-                        id: presentUserId
+                        id: presentUserId,
+                        checked: false,
+                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                        tags:["Default"],
                     });
 
                     var item2 = new Item({
                         name: "Hit the + button to add a new task!",
-                        id: presentUserId
+                        id: presentUserId,
+                        checked: false,
+                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                        tags:["Default"],
                     });
 
                     var item3 = new Item({
                         name: "<---Hit this to delete an item.",
-                        id: presentUserId
+                        id: presentUserId,
+                        checked: false,
+                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                        tags:["Default"],
                     });
 
                     var defaultItems = [item1, item2, item3];
@@ -158,7 +175,12 @@ app.get("/list/:userId", function (req, res) {
                     res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
                 } else {
                     console.log("Successfully found Items!!!");
-                    res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", redirectLocation: "/work/" + presentUserId, presentUser: presentUserId });
+                    User.find({ _id: presentUserId }, function (err, currentUser) {
+                        if (!err) {
+                            console.log(currentUser[0]);
+                            res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", redirectLocation: "/work/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                        }
+                    })
                 }
             }
         });
@@ -171,22 +193,33 @@ app.get("/work/:userId", function (req, res) {
     if (req.isAuthenticated()) {
         const presentUserId = req.params.userId;
         var listName = _.capitalize("work");
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         List.findOne({ name: listName, id: presentUserId }, function (err, foundList) {
             if (!err) {
                 if (!foundList) {
                     var item1 = new Item({
                         name: "Welcome to your todo List!",
-                        id: presentUserId
+                        id: presentUserId,
+                        checked: false,
+                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                        tags:["Default"],
                     });
 
                     var item2 = new Item({
                         name: "Hit the + button to add a new task!",
-                        id: presentUserId
+                        id: presentUserId,
+                        checked: false,
+                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                        tags:["Default"],
                     });
 
                     var item3 = new Item({
                         name: "<---Hit this to delete an item.",
-                        id: presentUserId
+                        id: presentUserId,
+                        checked: false,
+                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                        tags:["Default"],
                     });
                     var defaultItems = [item1, item2, item3];
                     //Create a new List
@@ -204,7 +237,7 @@ app.get("/work/:userId", function (req, res) {
                 }
             }
         });
-    }else{
+    } else {
         res.redirect("/");
     }
 });
@@ -235,9 +268,16 @@ app.post("/list/:userId", [check('newItem').isLength({ min: 1, max: 50 })], func
     } else {
         var itemName = req.body.newItem;
         var listName = req.body.list;
+        var completionDate = req.body.completionDate;
+        completionDate = moment.utc(completionDate).format('MM/DD/YYYY').toString();
+        var tagsOftask = req.body.tags;
+        tagsOftask = tagsOftask.split(',');
         var item = new Item({
             id: presentUserId,
-            name: itemName
+            name: itemName,
+            checked: false,
+            dateOfCompletion: completionDate,
+            tags:tagsOftask,
         });
         if (listName === "Today") {
             item.save();
@@ -258,24 +298,39 @@ app.post("/list/:userId", [check('newItem').isLength({ min: 1, max: 50 })], func
 
 app.post("/delete/:userId", function (req, res) {
     var presentUserId = req.params.userId;
-    var checkedItemId = req.body.checkbox;
+    var checkedItemId = req.body.ItemDelete;
     var listName = req.body.listName;
-
     if (listName === "Today") {
-        Item.findByIdAndRemove(checkedItemId, function (err) {
+        Item.findById({ "_id": checkedItemId }, function (err, params) {
             if (!err) {
-                console.log("Removed Item from Default List");
-                res.redirect("/list/" + presentUserId);
-            }
-        });
-    } else {
-        List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, function (err, foundList) {
-            if (!err) {
-                console.log("Removed Item from " + listName + " List");
-                res.redirect("/" + listName + "/" + presentUserId);
+                Item.findByIdAndUpdate(checkedItemId, { checked: !params.checked }, function (err, params) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("Updation Successfull!");
+                    }
+                    res.redirect("/list/" + presentUserId);
+                })
+            } else {
+                console.log(err);
             }
         });
     }
+    // if (listName === "Today") {
+    //     Item.findByIdAndRemove(checkedItemId, function (err) {
+    //         if (!err) {
+    //             console.log("Removed Item from Default List");
+    //             res.redirect("/list/" + presentUserId);
+    //         }
+    //     });
+    // } else {
+    //     List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, function (err, foundList) {
+    //         if (!err) {
+    //             console.log("Removed Item from " + listName + " List");
+    //             res.redirect("/" + listName + "/" + presentUserId);
+    //         }
+    //     });
+    // }
 });
 
 app.post("/register", function (req, res) {

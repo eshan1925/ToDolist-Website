@@ -1,5 +1,8 @@
 <%- include("header") -%> 
 <body> 
+    <div>
+        Hey, <%= userName %>
+    </div>
     <div class="box" id="heading">
         <h1><%= listTitle %></h1>
     </div>
@@ -9,15 +12,28 @@
             <% var deleter = "/delete/"+presentUser %>
             <form action="<%= deleter %> " method="post" >
                 <div class="item">
-                    <input name="checkbox" type="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
-                    <p><%= item.name %></p>
+                    <% if(item.checked===false){ %> 
+                        <input name="checkbox" type="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
+                    <% }else{ %>
+                        <input name="checkbox" checked type="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
+                    <% } %>
+                    <div class="taskDetails">
+                        <div><%= item.name %></div>
+                        <div class="tags">Tags-: <%= item.tags %></div>
+                        <div class="dateOfCompletion"> Due Date-: <%= item.dateOfCompletion %></div>
+                    </div>
+                    <input type="hidden" value="<%=item._id%>" name="ItemDelete" ></input> 
                 </div>
                 <input type="hidden" name="listName" value="<%= listTitle %>"></input>
             </form>
         <% }) %>
         <% var actionForm = "/list/"+presentUser %> 
             <form class="item" action="<%= actionForm %> " method="post" name="form1">
-                <input placeholder="New task" type="text" name="newItem" autocomplete="off">
+                <div class="inputsOfTask">
+                    <input placeholder="Add New task" type="text" name="newItem" autocomplete="off" required>
+                    <input id="tags" placeholder="Task Tags" type="text" name="tags" autocomplete="off" required>
+                    <input class="completionDate" type="date" name="completionDate" required>
+                </div>
                 <button id="add_task" type="submit" name="list" value=<%= listTitle %>>+</button>
             </form>
     </div>

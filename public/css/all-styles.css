@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Quicksand');
+@import url("https://fonts.googleapis.com/css?family=Montserrat|Quicksand");
 
-*{
-  font-family: 'quicksand',Arial, Helvetica, sans-serif;
+* {
+  font-family: "quicksand", Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
 
@@ -9,12 +9,20 @@ html {
   background-color: #eae9fd;
   background-image: -webkit-linear-gradient(65deg, #a683e3 50%, #eae9fd 50%);
   min-height: 1000px;
+  max-height: 100vh;
+  max-width: 100vw;
   font-family: "helvetica neue";
+  background-repeat: no-repeat;
 }
 
 h1 {
   color: #fff;
   padding: 10px;
+}
+
+.mainHeading {
+  display: flex;
+  justify-content: center;
 }
 
 .box {
@@ -34,7 +42,9 @@ h1 {
   min-height: 70px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid #f1f1f1;
+  padding: 2%;
 }
 
 .item:last-child {
@@ -58,9 +68,45 @@ p {
   color: #00204a;
 }
 
+.taskDetails {
+  margin: 0;
+  padding: 20px;
+  font-size: 20px;
+  font-weight: 200;
+  color: #00204a;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.dateOfCompletion,.tags {
+  font-size: 13px;
+  font-weight: 100;
+}
+
+.tags{
+  font-size: 15px;
+  font-weight: 150;
+}
+
 form.item {
+  display: flex;
+  flex-direction: row;
   text-align: center;
   margin-left: 20px;
+}
+
+.inputsOfTask {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.completionDate {
+  height: 5%;
+  width: 75%;
+  margin-top: 2%;
 }
 
 #add_task {
@@ -96,18 +142,27 @@ input[type="text"]:focus {
   opacity: 1;
 }
 
+#tags {
+  font-size: 15px;
+  font-weight: 150;
+  width: 250px;
+  margin-top: 0.1%;
+}
+
 footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
   color: rgb(0, 0, 0);
   color: rgb (0, 0, 0, 0.5);
   text-align: center;
-
 }
 
-.wrapper{
+.wrapper {
   text-align: center;
 }
 
-#Work_list_button_login{
+#Work_list_button_login {
   margin-bottom: 1rem;
   text-align: center;
   background-color: #fff;
@@ -121,7 +176,7 @@ footer {
   border-width: 0;
 }
 
-#Work_list_button{
+#Work_list_button {
   margin-bottom: 1rem;
   text-align: center;
   background-color: #fff;
@@ -135,7 +190,6 @@ footer {
   border-width: 0;
 }
 
-#Work_list_button:hover{
-  box-shadow: 0 10px 20px -8px rgba(0, 0, 0,.7);
+#Work_list_button:hover {
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.7);
 }
-
