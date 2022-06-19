@@ -145,7 +145,7 @@ app.get("/list/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
 
                     var item2 = new Item({
@@ -153,7 +153,7 @@ app.get("/list/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
 
                     var item3 = new Item({
@@ -161,7 +161,7 @@ app.get("/list/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
 
                     var defaultItems = [item1, item2, item3];
@@ -178,7 +178,7 @@ app.get("/list/:userId", function (req, res) {
                     User.find({ _id: presentUserId }, function (err, currentUser) {
                         if (!err) {
                             console.log(currentUser[0]);
-                            res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢",secondButtonName:"Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                            res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
                         }
                     })
                 }
@@ -206,7 +206,7 @@ app.get("/archieves/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
 
                     var item2 = new Item({
@@ -214,7 +214,7 @@ app.get("/archieves/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
 
                     var item3 = new Item({
@@ -222,7 +222,7 @@ app.get("/archieves/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
 
                     var defaultItems = [item1, item2, item3];
@@ -238,7 +238,7 @@ app.get("/archieves/:userId", function (req, res) {
                     console.log("Successfully found Items!!!");
                     User.find({ _id: presentUserId }, function (err, currentUser) {
                         if (!err) {
-                            res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢",secondButtonName:"ToDos🧐",redirectLocation: "/work/" + presentUserId,secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                            res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "ToDos🧐", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
                         }
                     })
                 }
@@ -265,7 +265,7 @@ app.get("/work/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
 
                     var item2 = new Item({
@@ -273,7 +273,7 @@ app.get("/work/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
 
                     var item3 = new Item({
@@ -281,7 +281,7 @@ app.get("/work/:userId", function (req, res) {
                         id: presentUserId,
                         checked: false,
                         dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags:["Default"],
+                        tags: ["Default"],
                     });
                     var defaultItems = [item1, item2, item3];
                     //Create a new List
@@ -295,7 +295,12 @@ app.get("/work/:userId", function (req, res) {
                     res.redirect("/work/" + presentUserId);
                 } else {
                     //Show an exisiting List
-                    res.render("list", { listTitle: foundList.name, newListItems: foundList.items, buttonName: "ToDo List✅", redirectLocation: "/list/" + presentUserId, presentUser: presentUserId });
+                    User.find({ _id: presentUserId }, function (err, currentUser) {
+                        if (!err) {
+                            console.log(foundList);
+                            res.render("list", { listTitle: foundList.name, newListItems: foundList.items, buttonName: "ToDo List✅",secondButtonName: "ToDos🧐", redirectLocation: "/list/" + presentUserId, presentUser: presentUserId.replace, userName: currentUser[0].username,secondRedirectLocation: "/list/" + presentUserId });
+                        }
+                    })
                 }
             }
         });
@@ -339,7 +344,7 @@ app.post("/list/:userId", [check('newItem').isLength({ min: 1, max: 50 })], func
             name: itemName,
             checked: false,
             dateOfCompletion: completionDate,
-            tags:tagsOftask,
+            tags: tagsOftask,
         });
         if (listName === "Today") {
             item.save();
@@ -377,7 +382,7 @@ app.post("/delete/:userId", function (req, res) {
                 console.log(err);
             }
         });
-    }
+    
     // if (listName === "Today") {
     //     Item.findByIdAndRemove(checkedItemId, function (err) {
     //         if (!err) {
@@ -385,14 +390,14 @@ app.post("/delete/:userId", function (req, res) {
     //             res.redirect("/list/" + presentUserId);
     //         }
     //     });
-    // } else {
-    //     List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, function (err, foundList) {
-    //         if (!err) {
-    //             console.log("Removed Item from " + listName + " List");
-    //             res.redirect("/" + listName + "/" + presentUserId);
-    //         }
-    //     });
-    // }
+    } else {
+        List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, function (err, foundList) {
+            if (!err) {
+                console.log("Removed Item from " + listName + " List");
+                res.redirect("/" + listName + "/" + presentUserId);
+            }
+        });
+    }
 });
 
 app.post("/register", function (req, res) {

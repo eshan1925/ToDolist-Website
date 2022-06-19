@@ -15,7 +15,7 @@ html {
   background-repeat:repeat-y;
 }
 
-h1 {
+h1, .h2 {
   color: #fff;
   padding: 10px;
 }
@@ -105,8 +105,19 @@ form.item {
 
 .completionDate {
   height: 5%;
-  width: 75%;
+  width: 65%;
   margin-top: 2%;
+}
+
+.dateInput{
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  justify-content: space-between;
+}
+
+#deadline{
+  margin-top: 2.5%;
 }
 
 #add_task {
