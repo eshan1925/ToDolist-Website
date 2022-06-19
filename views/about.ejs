@@ -1,18 +1,520 @@
-<%- include("header") -%> 
-
-<h2>
-    This is about page
-</h2>
-<p>
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis voluptatem beatae pariatur sequi earum id accusantium, facere tempora recusandae, animi delectus corrupti sapiente suscipit rerum nulla porro aliquid excepturi aperiam.
-    Neque, doloremque? Natus perspiciatis vero laborum dolorem ut voluptates eveniet beatae alias recusandae aspernatur earum sed iure eos rerum, aliquam voluptate velit. Nihil labore quasi dolores dolore accusamus, aliquid sequi.
-    Accusantium aliquam itaque molestias fugiat aut voluptas iste, hic eius atque praesentium temporibus porro amet officiis fuga enim perspiciatis voluptatibus possimus labore natus recusandae dolores totam delectus. Voluptatem, maxime deserunt!
-    Earum quia cupiditate qui aspernatur repellendus aut alias dolorem est modi atque ipsa veritatis numquam recusandae cumque obcaecati, deserunt iure commodi, nihil nobis porro! Illo suscipit repellat enim at atque!
-    Velit ipsa quae, amet earum beatae sint nobis, magnam magni quis pariatur iste assumenda commodi totam qui laboriosam nisi incidunt modi. Dolores nesciunt aliquid minus eos delectus blanditiis, dicta reiciendis?
-</p>
-<div class="wrapper">
-    <button id="Work_list_button" onclick="window.location = '<%= redirectLocation %>'">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List ✅</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat|Quicksand"
+    />
+    <link rel="stylesheet" href="/css/all-styles.css" />
+    <link rel="stylesheet" href="/css/aboutus.css" />
+  </head>
+  <body>
+    <center><h2>About Us</h2></center>
+    <p>
+      ToDo List App is a kind of app that generally used to maintain our
+      day-to-day tasks or list everything that we have to do, with the most
+      important tasks at the top of the list, and the least important tasks at
+      the bottom. It is helpful in planning our daily schedules.
+      <center>
+        <div class="stl_02">
+          <div class="stl_03">
+          </div>
+          <div class="stl_view">
+            <div class="stl_05 stl_06">
+              <div class="stl_01" style="top: 6.0463em; left: 6em">
+                <span
+                  class="stl_07 stl_08"
+                  style="font-weight: bold; word-spacing: 0.02em"
+                  >What is a ToDo List? &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 9.0796em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.02em"
+                  >What is a ToDo</span
+                ><span class="stl_09 stl_08" style="word-spacing: 0.01em"
+                  >&nbsp;List? The</span
+                ><span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >&nbsp;definition is a simple one.</span
+                ><span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >&nbsp;</span
+                ><span
+                  class="stl_10 stl_08"
+                  style="font-style: italic; word-spacing: 0.04em"
+                  >It’<span class="stl_11">s</span></span
+                ><span
+                  class="stl_10 stl_08"
+                  style="font-style: italic; word-spacing: 0.02em"
+                  >&nbsp;a list of tasks</span
+                ><span
+                  class="stl_10 stl_08"
+                  style="font-style: italic; word-spacing: 0.02em"
+                  >&nbsp;you &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 10.6775em; left: 6em">
+                <span
+                  class="stl_10 stl_08"
+                  style="font-style: italic; word-spacing: 0.03em"
+                  >need to complete or things that you want to do. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 13.442em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >Most typically, they’re organised in order of priority.
+                  Traditionally, they’re &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 15.0399em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >written on a piece of paper or post it notes and act as a
+                  memory aid. As &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 16.6378em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >technology has evolved we have been </span
+                ><a href="https://en.wikipedia.org/wiki/Email" target="_blank"
+                  ><span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                    >able t</span
+                  ></a
+                ><span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >o create a todo lists with &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 18.2357em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.06em"
+                  >excel spreadsheets, word documents, </span
+                ><a href="https://en.wikipedia.org/wiki/Email" target="_blank"
+                  ><span class="stl_12 stl_08" style="word-spacing: 0.03em"
+                    >email
+                  </span></a
+                ><span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >lists, todo list a</span
+                ><a
+                  href="https://checkify.com/blog/how-to-use-a-to-do-list/"
+                  target="_blank"
+                  ><span class="stl_09" style="word-spacing: 0em"
+                    >pps, &nbsp;</span
+                  ></a
+                >
+              </div>
+              <div class="stl_01" style="top: 19.8336em; left: 6em">
+                <a
+                  href="https://checkify.com/blog/how-to-use-a-to-do-list/"
+                  target="_blank"
+                  ><span class="stl_09 stl_08" style="word-spacing: 0.01em"
+                    >Mic</span
+                  ></a
+                ><span class="stl_09 stl_08" style="word-spacing: 0.02em"
+                  >rosoft to do and google to do list to name a few. You can </span
+                ><a
+                  href="https://checkify.com/blog/how-to-use-a-to-do-list/"
+                  target="_blank"
+                  ><span class="stl_12 stl_08" style="word-spacing: 0.02em"
+                    >use a to do &nbsp;</span
+                  ></a
+                >
+              </div>
+              <div class="stl_01" style="top: 21.4314em; left: 6em">
+                <a
+                  href="https://checkify.com/blog/how-to-use-a-to-do-list/"
+                  target="_blank"
+                  ><span class="stl_12 stl_08" style="word-spacing: 0.03em"
+                    >list
+                  </span></a
+                ><span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >in your home and personal life, or in the workplace.
+                  &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 24.196em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >Having a list of everything you need to do written down in
+                  one place &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 25.7939em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >means you shouldn’t forget anything important. By
+                  prioritising the tasks &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 27.3918em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >in the list you plan the order in which you’re going to do
+                  them and can &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 28.9897em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >quickly see what needs your immediate attention and what
+                  tasks you &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 30.5875em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >can leave until a little later. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 33.3589em; left: 6em">
+                <span
+                  class="stl_07 stl_08"
+                  style="font-weight: bold; word-spacing: 0.02em"
+                  >The Benefits of Using a To Do List &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 36.3921em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >One of the most important reasons you should use a to do list
+                  is that it &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 37.99em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >will help you stay organised. When you write all your tasks
+                  in a list, they &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 39.5879em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >seem more manageable. When you’ve got a clear outline of the
+                  tasks &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 41.1858em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >you’ve got to do and those you’ve completed, it helps you
+                  stay focused. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 42.7837em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >While freeing up space in your mind for other more creative
+                  tasks. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 45.5482em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >When you complete a task, you can cross it off your list.
+                  This gives you a &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 47.1461em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >sense of progress and achievement, something you’ll lack if
+                  you’re &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 48.744em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >always rushing from one task to the next. If you feel a sense
+                  of &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 50.3419em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >achievement, it spurs you on and motivates you to keep moving
+                  forward. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 53.1064em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >But that’s not the only benefit of a to do list. Here are a
+                  few more: &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 55.871em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >Improves your memory: A to do list acts as an external memory
+                  aid. It’s &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 57.4689em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >only possible to hold a few pieces of information at one
+                  time. Keep a to &nbsp;</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stl_02">
+          <div class="stl_03">
+          </div>
+          <div class="stl_view">
+            <div class="stl_05 stl_06">
+              <div class="stl_01" style="top: 6.0395em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >do list and you’ll be able to keep track of everything,
+                  rather than just a &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 7.6374em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >few of the tasks you need to do. Your to do list will also
+                  reinforce the &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 9.2353em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >information, which makes it less likely you’re going to
+                  forget something. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 11.9999em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >Increases productivity: A to do list allows you to prioritize
+                  the tasks that &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 13.5977em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >are more important. This means you don’t waste time on tasks
+                  that don’t &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 15.1956em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >require your immediate attention. Your list will help you
+                  stay focused on &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 16.7935em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >the tasks that are the most important. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 19.5581em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >Helps with motivation: To do lists are a great motivational
+                  tool because &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 21.1559em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >you can use them to clarify your goals. You can divide your
+                  long-term &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 22.7538em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >goal into smaller, more achievable short-term goals and as
+                  you tick each &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 24.3517em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >one off your list, your confidence will increase.
+                  &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 27.1231em; left: 6em">
+                <span
+                  class="stl_07 stl_08"
+                  style="font-weight: bold; word-spacing: 0.03em"
+                  >What is a ToDo List in business and why is it important?
+                  &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 30.1563em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >It seems such a simple solution by putting pen to paper and
+                  taking time &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 31.7542em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >out of your day to create a to do list, a plan for your day
+                  helps define &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 33.3521em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >your challenges and goals. Preventing time from being wasted
+                  trying to &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 34.95em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >identify what is the next most important task to tackle next
+                  and even &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 36.5479em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >more important makes sure you don't forget to do something
+                  important. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 39.3124em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >To-do lists offer a way to increase productivity, stopping
+                  you from &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 40.9103em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >forgetting things, helps prioritise tasks, manage tasks
+                  effectively, use &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 42.5082em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >time wisely and improve time management as well as workflow.
+                  &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 45.2795em; left: 6em">
+                <span
+                  class="stl_07 stl_08"
+                  style="font-weight: bold; word-spacing: 0.02em"
+                  >What Makes a Great To Do List App? &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 48.3128em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >To do lists come in all shapes and sizes. It always used to
+                  be something &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 49.9107em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >that you would write using pen and paper, but thanks to
+                  technology &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 51.5085em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >there’s an app that can come to the rescue. What makes a good
+                  to do &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 53.1064em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.06em"
+                  >list app? &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 55.871em; left: 7.5em">
+                <span class="stl_09">●</span>
+              </div>
+              <div class="stl_01" style="top: 57.4689em; left: 7.5em">
+                <span class="stl_09">●</span>
+              </div>
+              <div class="stl_01" style="top: 55.871em; left: 9em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.02em"
+                  >Tasks should be fast to add and organise &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 57.4689em; left: 9em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >There should be a variety of ways to organise the tasks
+                  &nbsp;</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stl_02">
+          <div class="stl_03">
+          </div>
+          <div class="stl_view">
+            <div class="stl_05 stl_06">
+              <div class="stl_01" style="top: 6.0395em; left: 7.5em">
+                <span class="stl_09">●</span>
+              </div>
+              <div class="stl_01" style="top: 7.6374em; left: 7.5em">
+                <span class="stl_09">●</span>
+              </div>
+              <div class="stl_01" style="top: 9.2353em; left: 7.5em">
+                <span class="stl_09">●</span>
+              </div>
+              <div class="stl_01" style="top: 10.8332em; left: 7.5em">
+                <span class="stl_09">●</span>
+              </div>
+              <div class="stl_01" style="top: 6.0395em; left: 9em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >Ability to plan your workflow &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 7.6374em; left: 9em">
+                <span class="stl_09 stl_11" style="word-spacing: 0em"
+                  >Setting priori<span class="stl_08">ties &nbsp;</span></span
+                >
+              </div>
+              <div class="stl_01" style="top: 9.2353em; left: 9em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.07em"
+                  >Reminders for any self-imposed deadlines. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 10.8332em; left: 9em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >Allocation of tasks if using it for task management with a
+                  team. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 12.4311em; left: 9em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >Team to-do list allows you to assign to the best person for
+                  the job. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 14.029em; left: 9em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.05em"
+                  >Able to synch between different platforms &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 14.029em; left: 7.5em">
+                <span class="stl_09">●</span>
+              </div>
+              <div class="stl_01" style="top: 16.7935em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >All it takes is just a few minutes every day to keep a to do
+                  list up to date. &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 18.3914em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >With a to do list, you can complete goals without wasting
+                  time trying to &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 19.9893em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >figure out priorities. Your productivity will increase, you
+                  won’t forget &nbsp;</span
+                >
+              </div>
+              <div class="stl_01" style="top: 21.5872em; left: 6em">
+                <span class="stl_09 stl_08" style="word-spacing: 0.04em"
+                  >things, your time management will improve and you’ll be able
+                  to manage &nbsp;</span
+                >
+              </div>
+              <div
+                class="stl_01"
+                style="top: 23.1851em; left: 6em; z-index: 494"
+              >
+                <span class="stl_09 stl_08" style="word-spacing: 0.03em"
+                  >your tasks more effectively. &nbsp;</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </center>
+    </p>
+    <div class="wrapper">
+      <button
+        id="Work_list_button"
+        onclick="window.location = '<%= redirectLocation %>'"
+      >
         Home 🏠
-    </button>
-</div>
-<%- include("footer") -%> 
+      </button>
+    </div>
+    <%- include("footer") -%>
+  </body>
+</html>

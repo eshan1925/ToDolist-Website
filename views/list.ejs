@@ -7,23 +7,22 @@
         <h1><%= listTitle %></h1>
     </div>
 
+    <% if(listTitle === "Today"){ %> 
     <div class="box">
         <% newListItems.forEach(function(item){ %>
             <% var deleter = "/delete/"+presentUser %>
             <form action="<%= deleter %> " method="post" >
+                <% if(item.checked===false){ %> 
                 <div class="item">
-                    <% if(item.checked===false){ %> 
-                        <input name="checkbox" type="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
-                    <% }else{ %>
-                        <input name="checkbox" checked type="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
-                    <% } %>
-                    <div class="taskDetails">
-                        <div><%= item.name %></div>
-                        <div class="tags">Tags-: <%= item.tags %></div>
-                        <div class="dateOfCompletion"> Due Date-: <%= item.dateOfCompletion %></div>
-                    </div>
+                        <input  name="checkbox" type="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
+                        <div class="taskDetails">
+                            <div><%= item.name %></div>
+                            <div class="tags">Tags-: <%= item.tags %></div>
+                            <div class="dateOfCompletion"> Due Date-: <%= item.dateOfCompletion %></div>
+                        </div>
                     <input type="hidden" value="<%=item._id%>" name="ItemDelete" ></input> 
                 </div>
+                <% } %>
                 <input type="hidden" name="listName" value="<%= listTitle %>"></input>
             </form>
         <% }) %>
@@ -37,19 +36,43 @@
                 <button id="add_task" type="submit" name="list" value=<%= listTitle %>>+</button>
             </form>
     </div>
+    <% }else if(listTitle==="Archieves"){ %> 
+        <div class="box">
+            <% newListItems.forEach(function(item){ %>
+                <% var deleter = "/delete/"+presentUser %>
+                <form action="<%= deleter %> " method="post" >
+                    <% if(item.checked===true){ %> 
+                    <div class="item">
+                            <input checked name="checkbox" type="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
+                            <div class="taskDetails">
+                                <div><%= item.name %></div>
+                                <div class="tags">Tags-: <%= item.tags %></div>
+                                <div class="dateOfCompletion"> Due Date-: <%= item.dateOfCompletion %></div>
+                            </div>
+                        <input type="hidden" value="<%=item._id%>" name="ItemDelete" ></input> 
+                    </div>
+                    <% } %>
+                    <input type="hidden" name="listName" value="<%= listTitle %>"></input>
+                </form>
+            <% }) %>
+        </div>
+        <% } %> 
     <div class="wrapper">
         <button id="Work_list_button" onclick="window.location = '<%= redirectLocation %>'">
             <%= buttonName %>
         </button>
-        <% var about = "/about/"+presentUser %> 
-        <button id="Work_list_button" onclick="window.location = '<%=about %>'">
-            About 🙂
+        <button id="Work_list_button" onclick="window.location = '<%= secondRedirectLocation %>'">
+            <%= secondButtonName %>
         </button>
     </div>
 
     <div class="wrapper">
         <button id="Work_list_button" onclick="window.location = '/logout'">
             Sign Out 👋
+        </button>
+        <% var about = "/about/"+presentUser %> 
+        <button id="Work_list_button" onclick="window.location = '<%=about %>'">
+            About 🙂
         </button>
     </div>
 <%- include("footer") -%> 
