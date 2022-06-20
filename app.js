@@ -16,6 +16,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 const { bindAll, intersection } = require('lodash');
 const moment = require('moment');
+const e = require('express');
 //app building
 var app = express();
 
@@ -131,59 +132,113 @@ app.get("/auth/google/lists",
 app.get("/list/:userId", function (req, res) {
     if (req.isAuthenticated()) {
         const presentUserId = req.params.userId;
-        // finding items
-        Item.find({ id: presentUserId }, function (err, foundItems) {
-            if (err) {
-                console.log(err);
-            } else {
-                if (foundItems.length === 0) {
-                    var today = new Date();
-                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                    //using the schema and building some default objects
-                    var item1 = new Item({
-                        name: "Welcome to your todo List!",
-                        id: presentUserId,
-                        checked: false,
-                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags: ["Default"],
-                    });
-
-                    var item2 = new Item({
-                        name: "Hit the + button to add a new task!",
-                        id: presentUserId,
-                        checked: false,
-                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags: ["Default"],
-                    });
-
-                    var item3 = new Item({
-                        name: "<---Hit this to delete an item.",
-                        id: presentUserId,
-                        checked: false,
-                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags: ["Default"],
-                    });
-
-                    var defaultItems = [item1, item2, item3];
-                    Item.insertMany(defaultItems, function (err) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            console.log("Successfully added items!!!");
-                        }
-                    });
-                    res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
+        if (presentUserId === "62b05e84ae52c59a3a68ac08") {
+            Item.find({}, function (err, foundItems) {
+                if (err) {
+                    console.log(err.message);
                 } else {
-                    console.log("Successfully found Items!!!");
-                    User.find({ _id: presentUserId }, function (err, currentUser) {
-                        if (!err) {
-                            console.log(currentUser[0]);
-                            res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
-                        }
-                    })
+                    console.log(foundItems);
+                    if (foundItems.length === 0) {
+                        var today = new Date();
+                        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                        //using the schema and building some default objects
+                        var item1 = new Item({
+                            name: "Welcome to your todo List!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item2 = new Item({
+                            name: "Hit the + button to add a new task!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item3 = new Item({
+                            name: "<---Hit this to delete an item.",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var defaultItems = [item1, item2, item3];
+                        Item.insertMany(defaultItems, function (err) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Successfully added items!!!");
+                            }
+                        });
+                        res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
+                    } else {
+                        console.log("Successfully found Items!!!");
+                        User.find({ _id: presentUserId }, function (err, currentUser) {
+                            if (!err) {
+                                res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                            }
+                        })
+                    }
                 }
-            }
-        });
+            })
+        } else {
+            // finding items
+            Item.find({ id: presentUserId }, function (err, foundItems) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (foundItems.length === 0) {
+                        var today = new Date();
+                        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                        //using the schema and building some default objects
+                        var item1 = new Item({
+                            name: "Welcome to your todo List!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item2 = new Item({
+                            name: "Hit the + button to add a new task!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item3 = new Item({
+                            name: "<---Hit this to delete an item.",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var defaultItems = [item1, item2, item3];
+                        Item.insertMany(defaultItems, function (err) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Successfully added items!!!");
+                            }
+                        });
+                        res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
+                    } else {
+                        console.log("Successfully found Items!!!");
+                        User.find({ _id: presentUserId }, function (err, currentUser) {
+                            if (!err) {
+                                res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                            }
+                        })
+                    }
+                }
+            });
+        }
     } else {
         res.redirect("/");
     }
@@ -192,58 +247,113 @@ app.get("/list/:userId", function (req, res) {
 app.get("/archieves/:userId", function (req, res) {
     if (req.isAuthenticated()) {
         const presentUserId = req.params.userId;
-        // finding items
-        Item.find({ id: presentUserId }, function (err, foundItems) {
-            if (err) {
-                console.log(err);
-            } else {
-                if (foundItems.length === 0) {
-                    var today = new Date();
-                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                    //using the schema and building some default objects
-                    var item1 = new Item({
-                        name: "Welcome to your todo List!",
-                        id: presentUserId,
-                        checked: false,
-                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags: ["Default"],
-                    });
-
-                    var item2 = new Item({
-                        name: "Hit the + button to add a new task!",
-                        id: presentUserId,
-                        checked: false,
-                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags: ["Default"],
-                    });
-
-                    var item3 = new Item({
-                        name: "<---Hit this to delete an item.",
-                        id: presentUserId,
-                        checked: false,
-                        dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
-                        tags: ["Default"],
-                    });
-
-                    var defaultItems = [item1, item2, item3];
-                    Item.insertMany(defaultItems, function (err) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            console.log("Successfully added items!!!");
-                        }
-                    });
-                    res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
+        if (presentUserId === "62b05e84ae52c59a3a68ac08") {
+            Item.find({}, function (err, foundItems) {
+                if (err) {
+                    console.log(err.message);
                 } else {
-                    console.log("Successfully found Items!!!");
-                    User.find({ _id: presentUserId }, function (err, currentUser) {
-                        if (!err) {
-                            res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "ToDos🧐", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
-                        }
-                    })
+                    console.log(foundItems);
+                    if (foundItems.length === 0) {
+                        var today = new Date();
+                        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                        //using the schema and building some default objects
+                        var item1 = new Item({
+                            name: "Welcome to your todo List!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item2 = new Item({
+                            name: "Hit the + button to add a new task!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item3 = new Item({
+                            name: "<---Hit this to delete an item.",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var defaultItems = [item1, item2, item3];
+                        Item.insertMany(defaultItems, function (err) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Successfully added items!!!");
+                            }
+                        });
+                        res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
+                    } else {
+                        console.log("Successfully found Items!!!");
+                        User.find({ _id: presentUserId }, function (err, currentUser) {
+                            if (!err) {
+                                res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "ToDos🧐", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                            }
+                        })
+                    }
                 }
-            }
-        });
+            })
+        } else {
+            // finding items
+            Item.find({ id: presentUserId }, function (err, foundItems) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (foundItems.length === 0) {
+                        var today = new Date();
+                        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                        //using the schema and building some default objects
+                        var item1 = new Item({
+                            name: "Welcome to your todo List!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item2 = new Item({
+                            name: "Hit the + button to add a new task!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item3 = new Item({
+                            name: "<---Hit this to delete an item.",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var defaultItems = [item1, item2, item3];
+                        Item.insertMany(defaultItems, function (err) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Successfully added items!!!");
+                            }
+                        });
+                        res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
+                    } else {
+                        console.log("Successfully found Items!!!");
+                        User.find({ _id: presentUserId }, function (err, currentUser) {
+                            if (!err) {
+                                res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "ToDos🧐", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                            }
+                        })
+                    }
+                }
+            });
+        }
     } else {
         res.redirect("/");
     }
@@ -298,7 +408,7 @@ app.get("/work/:userId", function (req, res) {
                     User.find({ _id: presentUserId }, function (err, currentUser) {
                         if (!err) {
                             console.log(foundList);
-                            res.render("list", { listTitle: foundList.name, newListItems: foundList.items, buttonName: "ToDo List✅",secondButtonName: "ToDos🧐", redirectLocation: "/list/" + presentUserId, presentUser: presentUserId.replace, userName: currentUser[0].username,secondRedirectLocation: "/list/" + presentUserId });
+                            res.render("list", { listTitle: foundList.name, newListItems: foundList.items, buttonName: "ToDo List✅", secondButtonName: "ToDos🧐", redirectLocation: "/list/" + presentUserId, presentUser: presentUserId.replace, userName: currentUser[0].username, secondRedirectLocation: "/list/" + presentUserId });
                         }
                     })
                 }
@@ -382,14 +492,14 @@ app.post("/delete/:userId", function (req, res) {
                 console.log(err);
             }
         });
-    
-    // if (listName === "Today") {
-    //     Item.findByIdAndRemove(checkedItemId, function (err) {
-    //         if (!err) {
-    //             console.log("Removed Item from Default List");
-    //             res.redirect("/list/" + presentUserId);
-    //         }
-    //     });
+
+        // if (listName === "Today") {
+        //     Item.findByIdAndRemove(checkedItemId, function (err) {
+        //         if (!err) {
+        //             console.log("Removed Item from Default List");
+        //             res.redirect("/list/" + presentUserId);
+        //         }
+        //     });
     } else {
         List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, function (err, foundList) {
             if (!err) {

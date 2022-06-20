@@ -79,7 +79,7 @@ p {
   width: 100%;
 }
 
-.dateOfCompletion,.tags {
+.dateOfCompletion,.tags,.creator {
   font-size: 13px;
   font-weight: 100;
 }

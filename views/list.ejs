@@ -20,6 +20,9 @@
                             <div><%= item.name %></div>
                             <div class="tags">Tags-: <%= item.tags %></div>
                             <div class="dateOfCompletion"> Due Date-: <%= item.dateOfCompletion %></div>
+                            <% if(userName === "admin123"){ %>
+                                <div class="creator">Creator Id-:<%= item.id %>  </div>
+                            <% } %>
                         </div>
                     <input type="hidden" value="<%=item._id%>" name="ItemDelete" ></input> 
                 </div>
@@ -27,7 +30,8 @@
                 <input type="hidden" name="listName" value="<%= listTitle %>"></input>
             </form>
         <% }) %>
-        <% var actionForm = "/list/"+presentUser %> 
+        <% if(userName !== "admin123"){ %>
+            <% var actionForm = "/list/"+presentUser %> 
             <form class="item" action="<%= actionForm %> " method="post" name="form1">
                 <div class="inputsOfTask">
                     <input placeholder="Add New task" type="text" name="newItem" autocomplete="off" required>
@@ -38,6 +42,7 @@
                 </div>
                 <button id="add_task" type="submit" name="list" value=<%= listTitle %>>+</button>
             </form>
+        <% } %>
     </div>
     <% }else if(listTitle==="Archieves"){ %> 
         <div class="box">
@@ -51,6 +56,9 @@
                                 <div><%= item.name %></div>
                                 <div class="tags">Tags-: <%= item.tags %></div>
                                 <div class="dateOfCompletion"> Due Date-: <%= item.dateOfCompletion %></div>
+                                <% if(userName === "admin123"){ %>
+                                    <div class="creator">Creator Id-:<%= item.id %>  </div>
+                                <% } %>
                             </div>
                         <input type="hidden" value="<%=item._id%>" name="ItemDelete" ></input> 
                     </div>
@@ -92,9 +100,11 @@
             </div>
             <% } %>  
     <div class="wrapper">
-        <button id="Work_list_button" onclick="window.location = '<%= redirectLocation %>'">
-            <%= buttonName %>
-        </button>
+        <% if(userName !== "admin123"){ %>
+            <button id="Work_list_button" onclick="window.location = '<%= redirectLocation %>'">
+                <%= buttonName %>
+            </button>
+        <% } %>
         <button id="Work_list_button" onclick="window.location = '<%= secondRedirectLocation %>'">
             <%= secondButtonName %>
         </button>
