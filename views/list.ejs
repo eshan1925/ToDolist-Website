@@ -8,7 +8,7 @@
         <h2 class="h2"><%= listTitle %></h2>
     </div>
 
-    <% if(listTitle === "Today"){ %> 
+    <% if(listTitle === "Tasks"){ %> 
     <div class="box">
         <% newListItems.forEach(function(item){ %>
             <% var deleter = "/delete/"+presentUser %>
@@ -103,6 +103,11 @@
         <% if(userName !== "admin123"){ %>
             <button id="Work_list_button" onclick="window.location = '<%= redirectLocation %>'">
                 <%= buttonName %>
+            </button>
+        <% } %>
+        <% if(userName === "admin123"){ %>
+            <button id="Work_list_button" onclick="window.location = '<%= adminRedirectLocation %>'">
+                <%= adminButton %>
             </button>
         <% } %>
         <button id="Work_list_button" onclick="window.location = '<%= secondRedirectLocation %>'">

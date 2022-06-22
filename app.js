@@ -137,7 +137,6 @@ app.get("/list/:userId", function (req, res) {
                 if (err) {
                     console.log(err.message);
                 } else {
-                    console.log(foundItems);
                     if (foundItems.length === 0) {
                         var today = new Date();
                         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -179,7 +178,7 @@ app.get("/list/:userId", function (req, res) {
                         console.log("Successfully found Items!!!");
                         User.find({ _id: presentUserId }, function (err, currentUser) {
                             if (!err) {
-                                res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                                res.render("list", { listTitle: "Tasks", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username, adminButton: "Today📆", adminRedirectLocation: "/past/" + presentUserId });
                             }
                         })
                     }
@@ -232,7 +231,7 @@ app.get("/list/:userId", function (req, res) {
                         console.log("Successfully found Items!!!");
                         User.find({ _id: presentUserId }, function (err, currentUser) {
                             if (!err) {
-                                res.render("list", { listTitle: "Today", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                                res.render("list", { listTitle: "Tasks", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
                             }
                         })
                     }
@@ -252,7 +251,6 @@ app.get("/archieves/:userId", function (req, res) {
                 if (err) {
                     console.log(err.message);
                 } else {
-                    console.log(foundItems);
                     if (foundItems.length === 0) {
                         var today = new Date();
                         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -294,7 +292,7 @@ app.get("/archieves/:userId", function (req, res) {
                         console.log("Successfully found Items!!!");
                         User.find({ _id: presentUserId }, function (err, currentUser) {
                             if (!err) {
-                                res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "ToDos🧐", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                                res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "ToDos🧐", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username,adminButton: "Today📆", adminRedirectLocation: "/past/" + presentUserId });
                             }
                         })
                     }
@@ -347,7 +345,7 @@ app.get("/archieves/:userId", function (req, res) {
                         console.log("Successfully found Items!!!");
                         User.find({ _id: presentUserId }, function (err, currentUser) {
                             if (!err) {
-                                res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "ToDos🧐", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                                res.render("list", { listTitle: "Archieves", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "ToDos🧐", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/list/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username, adminButton: "Today📆", adminRedirectLocation: "/past/" + presentUserId });
                             }
                         })
                     }
@@ -358,6 +356,100 @@ app.get("/archieves/:userId", function (req, res) {
         res.redirect("/");
     }
 });
+
+app.get("/past/:userId", function (req, res) {
+    if (req.isAuthenticated()) {
+        const presentUserId = req.params.userId;
+        if (presentUserId === "62b05e84ae52c59a3a68ac08") {
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+            var year = d.getFullYear();
+            if (month < 9) {
+                if (day < 9) {
+                    var compDate = "0" + month + "/" + "0" + day + "/" + year;
+                } else {
+                    var compDate = "0" + month + "/" + day + "/" + year;
+                }
+            } else {
+                if (day < 9) {
+                    var compDate = month + "/" + "0" + day + "/" + year;
+                } else {
+                    var compDate = month + "/" + day + "/" + year;
+                }
+            }
+            Item.find({ dateOfCompletion: compDate }, function (err, foundItems) {
+                if (err) {
+                    console.log(err.message);
+                } else {
+                    console.log("Successfully found Items!!!");
+                    User.find({ _id: presentUserId }, function (err, currentUser) {
+                        if (!err) {
+                            res.render("list", { listTitle: "Tasks", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username, adminButton: "Today📆", adminRedirectLocation: "/past/" + presentUserId });
+                        }
+                    })
+
+                }
+            })
+        } else {
+            // finding items
+            Item.find({ id: presentUserId }, function (err, foundItems) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (foundItems.length === 0) {
+                        var today = new Date();
+                        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                        //using the schema and building some default objects
+                        var item1 = new Item({
+                            name: "Welcome to your todo List!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item2 = new Item({
+                            name: "Hit the + button to add a new task!",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var item3 = new Item({
+                            name: "<---Hit this to delete an item.",
+                            id: presentUserId,
+                            checked: false,
+                            dateOfCompletion: moment.utc(date).format('MM/DD/YYYY').toString(),
+                            tags: ["Default"],
+                        });
+
+                        var defaultItems = [item1, item2, item3];
+                        Item.insertMany(defaultItems, function (err) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Successfully added items!!!");
+                            }
+                        });
+                        res.redirect("/list/" + presentUserId); //for redirecting so that we can see the items
+                    } else {
+                        console.log("Successfully found Items!!!");
+                        User.find({ _id: presentUserId }, function (err, currentUser) {
+                            if (!err) {
+                                res.render("list", { listTitle: "Tasks", newListItems: foundItems, buttonName: "Work List🏢", secondButtonName: "Archieves ✅", redirectLocation: "/work/" + presentUserId, secondRedirectLocation: "/archieves/" + presentUserId, presentUser: presentUserId, userName: currentUser[0].username });
+                            }
+                        })
+                    }
+                }
+            });
+        }
+    } else {
+        res.redirect("/");
+    }
+});
+
 
 
 
@@ -407,7 +499,6 @@ app.get("/work/:userId", function (req, res) {
                     //Show an exisiting List
                     User.find({ _id: presentUserId }, function (err, currentUser) {
                         if (!err) {
-                            console.log(foundList);
                             res.render("list", { listTitle: foundList.name, newListItems: foundList.items, buttonName: "ToDo List✅", secondButtonName: "ToDos🧐", redirectLocation: "/list/" + presentUserId, presentUser: presentUserId.replace, userName: currentUser[0].username, secondRedirectLocation: "/list/" + presentUserId });
                         }
                     })
@@ -456,7 +547,7 @@ app.post("/list/:userId", [check('newItem').isLength({ min: 1, max: 50 })], func
             dateOfCompletion: completionDate,
             tags: tagsOftask,
         });
-        if (listName === "Today") {
+        if (listName === "Tasks") {
             item.save();
             res.redirect("/list/" + presentUserId);
         } else {
@@ -477,7 +568,7 @@ app.post("/delete/:userId", function (req, res) {
     var presentUserId = req.params.userId;
     var checkedItemId = req.body.ItemDelete;
     var listName = req.body.listName;
-    if (listName === "Today" || listName === "Archieves") {
+    if (listName === "Tasks" || listName === "Archieves") {
         Item.findById({ "_id": checkedItemId }, function (err, params) {
             if (!err) {
                 Item.findByIdAndUpdate(checkedItemId, { checked: !params.checked }, function (err, params) {
